@@ -1,0 +1,38 @@
+app-id: org.fcitx_im.fcitx5.ime.libime-jyutping
+runtime: org.fcitx_im.fcitx5
+sdk: org.kde.Sdk//5.14
+build-extension: true
+separate-locales: false
+build-options:
+  prefix: /app/ime/libime-jyutping
+  libdir: /app/ime/libime-jyutping/lib
+  ldflags: -L/app/ime/libime-jyutping/lib
+  prepend-pkg-config-path: /app/ime/libime-jyutping/lib/pkgconfig
+  prepend-ld-library-path: /app/ime/libime-jyutping/lib
+  prepend-path: /app/ime/libime-jyutping/bin
+  cflags: -I/app/ime/libime-jyutping/include
+  cxxflags: -I/app/ime/libime-jyutping/include
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - '*.a'
+  - '*.la'
+modules:
+  - name: libime-jyutping
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_LIBDIR=${FLATPAK_DEST}/lib
+    post-install:
+      - ./rename_icons
+      - sed -i 's/Icon=fcitx-\(.*\)/Icon=org.fcitx_im.fcitx5.\1/g' ${FLATPAK_DEST}/share/fcitx5/inputmethod/*.conf
+    sources:
+      - type: git
+        url: https://github.com/fcitx/libime-jyutping.git
+        branch: master
+        commit: 816e484192d9b356c0aedede0f55075b9905c527
+#     - type: file
+#       path: rename_icons
+#     - type: shell
+#       commands:
+#         - sed -i 's#${FCITX_INSTALL_PKGDATADIR}#${CMAKE_INSTALL_PREFIX}/share/fcitx5#g'
+#             {src,profile}/CMakeLists.txt

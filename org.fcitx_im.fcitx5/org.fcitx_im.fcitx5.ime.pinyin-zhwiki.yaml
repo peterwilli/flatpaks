@@ -1,0 +1,40 @@
+app-id: org.fcitx_im.fcitx5.ime.pinyin-zhwiki
+runtime: org.fcitx_im.fcitx5
+sdk: org.kde.Sdk//5.14
+build-extension: true
+separate-locales: false
+build-options:
+  prefix: /app/ime/pinyin-zhwiki
+  libdir: /app/ime/pinyin-zhwiki/lib
+  ldflags: -L/app/ime/pinyin-zhwiki/lib
+  prepend-pkg-config-path: /app/ime/pinyin-zhwiki/lib/pkgconfig
+  prepend-ld-library-path: /app/ime/pinyin-zhwiki/lib
+  prepend-path: /app/ime/pinyin-zhwiki/bin
+  cflags: -I/app/ime/pinyin-zhwiki/include
+  cxxflags: -I/app/ime/pinyin-zhwiki/include
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - '*.a'
+  - '*.la'
+modules:
+  - name: fcitx5-pinyin-zhwiki
+    build-options:
+      build-args:
+        - --share=network
+     #env:
+     #  - PYTHONPATH=/app/lib/python3.7/site-packages
+     #  - PYTHON=python3.7
+    buildsystem: simple
+    build-commands:
+      - make
+      - install -Dm644 zhwiki.dict -t $(FLATPAK_DEST)/share/fcitx5/pinyin/
+    sources:
+      - type: git
+        url: https://github.com/felixonmars/fcitx5-pinyin-zhwiki.git
+        branch: master
+        commit: 2f66d90b8cb78e6331828eca4ef7da258fc282ef
+      - type: file
+        url: https://dumps.wikimedia.org/zhwiki/20200801/zhwiki-20200801-all-titles-in-ns0.gz
+        dest-filename: zhwiki-20200801-all-titles-in-ns0.gz
+        sha256: 5b58c5fdc18f20c612e480861260e4cc8047d1a335968bdec3cad8c6739b17f2
