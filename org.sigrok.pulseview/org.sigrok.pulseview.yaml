@@ -1,6 +1,6 @@
 app-id: org.sigrok.pulseview
 runtime: org.kde.Platform
-runtime-version: '5.14'
+runtime-version: '5.15'
 sdk: org.kde.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.openjdk
@@ -107,7 +107,6 @@ modules:
 #                     - name: graphviz
 #                     - name: perl-xml-parser
 #                     - name: libsigc++-docs
-#                     - name: doxygen
 #                     - name: gtk-doc
 #                 - name: perl-xml-parser (make)
 #                   modules:
@@ -117,6 +116,7 @@ modules:
             config-opts:
               - -DCMAKE_SKIP_BUILD_RPATH=ON
               - -DCMAKE_BUILD_TYPE=Release
+              - -DDOCUMENTATION=OFF
               - -DEXAMPLES=OFF
               - -DFTDI_EEPROM=ON
               - -DLIB_SUFFIX=/
@@ -135,29 +135,11 @@ modules:
                   - type: archive
                     url: https://github.com/martinh/libconfuse/releases/download/v3.3/confuse-3.3.tar.gz
                     sha256: 3a59ded20bc652eaa8e6261ab46f7e483bc13dad79263c15af42ecbb329707b8
-          - name: doxygen
-            buildsystem: cmake
-            config-opts:
-              - -Dbuild_doc=OFF
-            sources:
-              - type: archive
-                url: https://github.com/doxygen/doxygen/archive/Release_1_8_18.tar.gz
-                sha256: 9c88f733396dca16139483045d5afa5bbf19d67be0b8f0ea43c4e813ecfb2aa2
-            cleanup:
-              - '*'
-            modules:
-              - name: ghostscript
-                sources:
-                  - type: archive
-                    url: https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs952/ghostpdl-9.52.tar.xz
-                    sha256: 33dd239a61bac154de123b6f8a28ebf3d8d9d462ac282065a1c389f96d92c0f3
-                cleanup:
-                  - '*'
           - name: libieee1284
             config-opts:
               - --with-python
             build-options:
-              cflags: -I/usr/include/python3.7m
+              cflags: -I/usr/include/python3.8
             sources:
               - type: git
                 url: https://github.com/twaugh/libieee1284.git
