@@ -52,10 +52,14 @@ modules:
       -  install -Dm644 com.insynchq.insync.desktop /app/share/applications/com.insynchq.insync.desktop
       -  install -Dm644 insync-helper.desktop /app/share/applications/com.insynchq.insync.insync-helper.desktop
       -  install -Dm644 insync-helper.xml /app/share/mime/packages/com.insynchq.insync.insync-helper.xml
+      -  install -Dm644 status/* -t /app/share/icons/hicolor/48x48/status/
+      -  install -Dm644 /usr/share/icons/hicolor/index.theme -t /app/share/icons/hicolor/
       -  install -Dm755 /usr/bin/ar /app/bin
       -  mkdir -p /app/lib
       -  ARCH_TRIPLE=$(gcc --print-multiarch) && cp /usr/lib/${ARCH_TRIPLE}/libbfd-*.so /app/lib/
       -  ARCH_TRIPLE=$(gcc --print-multiarch) && ln -s /usr/lib/${ARCH_TRIPLE}/libcurl.so.4.5.0 /app/lib/libcurl-gnutls.so.4
+    post-install:
+      -  gtk-update-icon-cache /app/share/icons/hicolor/
     sources:
       - type: script
         dest-filename: apply_extra
