@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd /app/extra/lib/insync
+
+LC_TIME=C exec ./insync-headless "$@"
